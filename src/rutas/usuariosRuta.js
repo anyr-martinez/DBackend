@@ -156,7 +156,7 @@ router.get('/get', usuariosControlador.getUsuarios);
 
 /**
  * @swagger
- * /api/usuarios/obetener/{id}:
+ * /api/usuarios/obtener/{id}:
  *   get:
  *     summary: Obtener un usuario por ID
  *     tags: [Usuarios]
@@ -175,7 +175,7 @@ router.get('/get', usuariosControlador.getUsuarios);
  *       500:
  *         description: Error al obtener el usuario
  */
-router.get('/obetner/:id', usuariosControlador.getusuarioById);
+router.get('/obtener/:id', usuariosControlador.getusuarioById);
 
 /**
  * @swagger

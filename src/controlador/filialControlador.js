@@ -45,6 +45,24 @@ exports.getFilialById = async (req, res) => {
       return res.status(500).json({ error: 'Error al obtener la filial', details: error.message });
     }
   };
+
+  // Obtener una filial por nombre
+exports.getFilialByNombre = async (req, res) => {
+  try {
+    const { nombre } = req.params;
+
+    const [result] = await db.query('SELECT id, nombre FROM filiales WHERE nombre = ?', [nombre]);
+
+    if (result.length === 0) {
+      return res.status(404).json({ message: 'Filial no encontrada' });
+    }
+
+    return res.status(200).json(result[0]);
+  } catch (error) {
+    return res.status(500).json({ error: 'Error al obtener la filial por nombre', details: error.message });
+  }
+};
+
   
 
 

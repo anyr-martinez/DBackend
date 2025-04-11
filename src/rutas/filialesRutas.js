@@ -91,4 +91,38 @@ router.get('/listar', filialControlador.getAllFiliales);
 router.get('/get/:id', filialControlador.getFilialById);
 
 
+/**
+ * @swagger
+ * /api/filial/getByNombre/{nombre}:
+ *   get:
+ *     summary: Obtener una filial por nombre
+ *     description: Devuelve los detalles de una filial especificada por su nombre.
+ *     tags: 
+ *      - Filiales
+ *     parameters:
+ *       - in: path
+ *         name: nombre
+ *         required: true
+ *         description: Nombre de la filial
+ *         type: string
+ *     responses:
+ *       200:
+ *         description: Detalles de la filial
+ *         schema:
+ *           type: object
+ *           properties:
+ *             id:
+ *               type: integer
+ *               example: 1
+ *             nombre:
+ *               type: string
+ *               example: "Filial Siguatepeque"
+ *       404:
+ *         description: Filial no encontrada
+ *       500:
+ *         description: Error al obtener la filial
+ */
+router.get('/getByNombre/:nombre', filialControlador.getFilialByNombre);
+
+
 module.exports = router;
