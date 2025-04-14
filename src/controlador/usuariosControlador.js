@@ -9,7 +9,7 @@ exports.login = async (req, res, next) => {
       const { usuario, contrasena } = req.body;
       const data = await userService.login(usuario, contrasena);
 
-      // Asegurarse de incluir todos los campos necesarios
+      // incluir todos los campos necesarios
       res.status(200).json({
           data: {
               id: data.id,

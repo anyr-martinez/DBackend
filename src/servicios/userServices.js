@@ -8,7 +8,7 @@ const User=require('../modelos/usuarioModelo');
 // Servicio de login
 exports.login = async (usuario, contrasena) => {
     try {
-        const user = await User.getByUser(usuario);  // Asegúrate de que el modelo esté obteniendo el campo nombre
+        const user = await User.getByUser(usuario); 
 
         if (!user) {
             throw new Error("Usuario o contraseña incorrecto");
@@ -36,7 +36,7 @@ exports.login = async (usuario, contrasena) => {
 
         return {
             id: user.id,
-            nombre: user.nombre,        // Nombre del usuario
+            nombre: user.nombre,        
             usuario: user.usuario,
             rol_id: user.rol_id,
             id_filial: user.id_filial,

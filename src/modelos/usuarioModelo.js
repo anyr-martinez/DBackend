@@ -1,5 +1,5 @@
 const mysql = require('mysql2');
-const pool = require('../utilidades/db'); // Asegúrate de que la conexión a la base de datos está correctamente configurada
+const pool = require('../utilidades/db'); 
 
 
   const User = {
@@ -23,7 +23,7 @@ const pool = require('../utilidades/db'); // Asegúrate de que la conexión a la
 
         // Ejecutar la consulta
         const [rows] = await pool.execute(query, [usuario]);
-        return rows[0]; // Asegúrate de que este esté devolviendo el primer elemento
+        return rows[0]; 
     }
 };
 

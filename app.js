@@ -17,7 +17,6 @@ app.use(cors({
     origin: ['http://localhost:4000', 'http://localhost:3000'],
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],
-    exposedHeaders: ['Content-Disposition'] // Permite descargar archivos PDF 
   }));
   
 app.use(bodyParser.json());
@@ -35,7 +34,7 @@ const swaggerOptions = {
       info: {
         title: 'API DE GESTION DE DASHBOARD TI',
         version: '1.0.0',
-        description: 'Documentación para la API de manejo de Dashboards.)',
+        description: 'Documentación para la API de manejo de Dashboards.',
       },
     components: {
       securitySchemes: {
@@ -63,6 +62,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use('/api/usuarios',usuariosRuta);
 app.use('/api/roles', rolesRutas);
 app.use('/api/filial', filialRutas);
+
 //Conexion
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {

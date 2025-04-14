@@ -199,8 +199,7 @@ router.get('/obtener/:id', usuariosControlador.getusuarioById);
  *             required:
  *               - nombre
  *               - usuario
- *               - rol_id
-         
+ *               - rol_id       
  *             properties:
  *               nombre:
  *                 type: string
