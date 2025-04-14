@@ -29,6 +29,7 @@ const filialControlador = require('../controlador/filialControlador');
  */
 router.post('/create', filialControlador.createFilial);
 
+//listar filiales
 /**
  * @swagger
  * /api/filial/listar:
@@ -56,6 +57,7 @@ router.post('/create', filialControlador.createFilial);
  */
 router.get('/listar', filialControlador.getAllFiliales);
 
+//obtener filial por ID
 /**
  * @swagger
  * /api/filial/get/{id}:
@@ -90,7 +92,7 @@ router.get('/listar', filialControlador.getAllFiliales);
  */
 router.get('/get/:id', filialControlador.getFilialById);
 
-
+//obtener filial por Nombre
 /**
  * @swagger
  * /api/filial/getByNombre/{nombre}:
@@ -123,6 +125,5 @@ router.get('/get/:id', filialControlador.getFilialById);
  *         description: Error al obtener la filial
  */
 router.get('/getByNombre/:nombre', filialControlador.getFilialByNombre);
-
 
 module.exports = router;
