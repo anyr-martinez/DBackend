@@ -1,12 +1,12 @@
 const express = require('express');
 const cors = require('cors');
-const dashboardRoutes = require('./src/rutas/dashboardRutas');
 const usuariosRuta  = require('./src/rutas/usuariosRuta');
 const rolesRutas = require('./src/rutas/rolesRutas');
 const filialRutas = require('./src/rutas/filialesRutas');
 const swaggerUi = require('swagger-ui-express');
 const swaggerJsdoc = require('swagger-jsdoc');
 const bodyParser = require('body-parser');
+const path = require('path');
 
 
 const app = express();
@@ -24,8 +24,6 @@ app.use(bodyParser.json());
 
 app.use(cors());
 app.use(express.json());
-
-app.use('/api/dashboards', dashboardRoutes);
 
 // Opciones para generar la documentación de Swagger con JSDoc
 const swaggerOptions = {
@@ -62,6 +60,10 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use('/api/usuarios',usuariosRuta);
 app.use('/api/roles', rolesRutas);
 app.use('/api/filial', filialRutas);
+
+
+app.use('/src/imagenes', express.static(path.join(__dirname, '/src/imagenes')));
+
 
 //Conexion
 const PORT = process.env.PORT || 4000;

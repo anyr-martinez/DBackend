@@ -1,7 +1,8 @@
 const bcrypt = require('bcryptjs');
 const db = require('../utilidades/db');
 const userService=require('../servicios/userServices');
-
+const multer = require("multer");
+const path = require("path");
 
 // Logeo
 exports.login = async (req, res, next) => {
@@ -19,7 +20,8 @@ exports.login = async (req, res, next) => {
               id_filial: data.id_filial,
               token: data.token,
               rol_nombre: data.rol_nombre,
-              filial_nombre: data.filial_nombre
+              filial_nombre: data.filial_nombre,
+              foto: data.foto,
           }
       });
   } catch (error) {
@@ -110,3 +112,32 @@ exports.deleteUser = async (req, res) => {
     return res.status(500).json({ error: 'Error al eliminar el usuario', details: error.message });
   }
 };
+
+// Configuración para subir imágenes (foto de perfil)
+exports.storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, path.join(__dirname, '../../src/imagenes'));  
+
+  },
+  filename: (req, file, cb) => {
+    const ext = path.extname(file.originalname); 
+    const uniqueName = Date.now() + "-" + Math.round(Math.random() * 1E9) + ext;
+    cb(null, uniqueName);
+  },
+});
+
+// Filtro para solo permitir imágenes
+exports.fileFilter = (req, file, cb) => {
+  const allowed = ["image/jpeg", "image/png", "image/jpg"];
+  if (allowed.includes(file.mimetype)) {
+    cb(null, true);
+  } else {
+    cb(new Error("Formato de imagen no permitido."), false);
+  }
+};
+
+exports.upload = multer({
+  storage: exports.storage,
+  fileFilter: exports.fileFilter,
+  limits: { fileSize: 5 * 1024 * 1024 } 
+}).single('foto'); 

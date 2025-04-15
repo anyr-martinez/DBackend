@@ -1,12 +1,13 @@
 const express = require('express');
 const router = express.Router();
 const usuariosControlador = require('../controlador/usuariosControlador');
+const db = require('../utilidades/db');
 
 /**
  * @swagger
  * tags:
  *   name: Usuarios
- *   description: Gestión de usuarios del sistema
+ *   
  */
 
 
@@ -60,6 +61,7 @@ const usuariosControlador = require('../controlador/usuariosControlador');
  *                     id_filial:
  *                       type: integer
  *                       description: El ID de la filial
+ *                     
  *                     token:
  *                       type: string
  *                       description: El token JWT que debe ser usado para autenticar futuras solicitudes
@@ -235,5 +237,88 @@ router.put('/actualizar/:id', usuariosControlador.updateUser);
  *         description: Error al eliminar el usuario
  */
 router.delete('/eliminar/:id', usuariosControlador.deleteUser);
+
+
+// Subir foto de perfil
+/**
+ * @swagger
+ * /api/usuarios/subir-foto:
+ *   post:
+ *     summary: Sube la foto de perfil de un usuario
+ *     tags:
+ *       - Usuarios
+ *     consumes:
+ *       - multipart/form-data
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               foto:
+ *                 type: string
+ *                 format: binary
+ *                 description: Imagen del usuario (.jpg, .jpeg, .png)
+ *               id:
+ *                 type: integer
+ *                 description: ID del usuario
+ *     responses:
+ *       200:
+ *         description: Imagen subida correctamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                 filename:
+ *                   type: string
+ *       400:
+ *         description: No se subió ninguna imagen o el formato es incorrecto
+ *       404:
+ *         description: Usuario no encontrado
+ */
+router.post('/subir-foto', usuariosControlador.upload, async (req, res) => {
+    try {
+        const { id } = req.body;
+    
+        if (!req.file) {
+            return res.status(400).json({ error: 'No se subió ninguna imagen' });
+        }
+    
+        // Verificar si el id_usuario está presente
+        if (!id) {
+            return res.status(400).json({ error: 'Debe proporcionar el ID del usuario' });
+        }
+    
+        // Verificar si el usuario existe y está inactivo (estado = 0)
+        const [usuario] = await db.query('SELECT id, estado FROM usuarios WHERE id = ?', [id]);
+    
+        if (usuario.length === 0) {
+            return res.status(404).json({ error: 'Usuario no encontrado' });
+        }
+    
+        if (usuario[0].estado === 0) {
+            return res.status(400).json({ error: 'El usuario está inactivo, no se puede subir la imagen' });
+        }
+    
+        const filename = req.file.filename;
+    
+        // Asociar la foto con el usuario en la BD
+        const query = 'UPDATE usuarios SET foto = ? WHERE id = ?';
+        await db.query(query, [filename, id]);
+    
+        res.status(200).json({
+            message: 'Imagen subida y asociada correctamente',
+            filename,
+        });
+    } catch (error) {
+        res.status(500).json({ error: 'Error al subir la imagen', details: error.message });
+    }
+    
+  });
+  
 
 module.exports = router;

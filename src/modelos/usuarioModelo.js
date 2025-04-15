@@ -14,6 +14,7 @@ const pool = require('../utilidades/db');
                 u.rol_id, 
                 u.id_filial, 
                 u.estado,
+                u.foto,
                 r.nombre AS rol_nombre,       -- Alias para el nombre del rol
                 f.nombre AS filial_nombre     -- Alias para el nombre de la filial
             FROM usuarios u

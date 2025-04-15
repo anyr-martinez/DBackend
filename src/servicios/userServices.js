@@ -42,7 +42,8 @@ exports.login = async (usuario, contrasena) => {
             id_filial: user.id_filial,
             token,
             rol_nombre: user.rol_nombre,
-            filial_nombre: user.filial_nombre
+            filial_nombre: user.filial_nombre,
+            foto: user.foto,
         };
     } catch (error) {
         console.error("Error en login:", error.message);
