@@ -1,36 +1,35 @@
 const bcrypt = require('bcryptjs');
 const db = require('../utilidades/db');
-const userService=require('../servicios/userServices');
+const userService = require('../servicios/userServices');
 const multer = require("multer");
 const path = require("path");
+
 
 // Logeo
 exports.login = async (req, res, next) => {
   try {
-      const { usuario, contrasena } = req.body;
-      const data = await userService.login(usuario, contrasena);
+    const { usuario, contrasena } = req.body;
+    const data = await userService.login(usuario, contrasena);
 
-      // incluir todos los campos necesarios
-      res.status(200).json({
-          data: {
-              id: data.id,
-              nombre: data.nombre,          
-              usuario: data.usuario,
-              rol_id: data.rol_id,
-              id_filial: data.id_filial,
-              token: data.token,
-              rol_nombre: data.rol_nombre,
-              filial_nombre: data.filial_nombre,
-              foto: data.foto,
-          }
-      });
+    // Incluir todos los campos necesarios
+    res.status(200).json({
+      data: {
+        id: data.id,
+        nombre: data.nombre,
+        usuario: data.usuario,
+        rol_id: data.rol_id,
+        id_filial: data.id_filial,
+        token: data.token,
+        rol_nombre: data.rol_nombre,
+        filial_nombre: data.filial_nombre,
+        foto: data.foto,
+      }
+    });
   } catch (error) {
-      console.error("Error al iniciar sesión:", error.message);
-      res.status(401).json({ message: error.message });
+    console.error("Error al iniciar sesión:", error.message);
+    res.status(401).json({ message: error.message });
   }
 };
-
-
 
 // Crear nuevo usuario
 exports.createUser = async (req, res) => {
@@ -117,7 +116,6 @@ exports.deleteUser = async (req, res) => {
 exports.storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, path.join(__dirname, '../../src/imagenes'));  
-
   },
   filename: (req, file, cb) => {
     const ext = path.extname(file.originalname); 
@@ -139,5 +137,6 @@ exports.fileFilter = (req, file, cb) => {
 exports.upload = multer({
   storage: exports.storage,
   fileFilter: exports.fileFilter,
-  limits: { fileSize: 5 * 1024 * 1024 } 
+  limits: { fileSize: 5 * 1024 * 1024 } // 5MB
 }).single('foto'); 
+
